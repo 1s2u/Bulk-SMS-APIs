@@ -16,7 +16,7 @@ GET Method Bulk SMS Messaging
 POST Method Bulk SMS Messaging
 
 More APIs will be available soon, you may create your API using our free API Service as the following: 
-
+-------------
 Free HTTP API : Send Bulk SMS Messaging using HTTP protocol
 
 Free DLR API : Get a Delivery Report for Send SMS
