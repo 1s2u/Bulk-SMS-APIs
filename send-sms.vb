@@ -10,7 +10,7 @@ Namespace Demo
 
 
             Dim webClient As New System.Net.WebClient
-            Dim result As String = webClient.DownloadString("https://api.1s2u.io/bulksms?username=xxxxxxx&password=xxxxxxxx&mt=0&fl=0&Sid=Test&mno=xxxxxxxxx&msg=Welcome toTest technologies")
+            Dim result As String = webClient.DownloadString("https://api.1s2u.io/bulksms?username=xxxxxxx&password=xxxxxxxx&mt=0&fl=0&Sid=Test&mno=601xxxxxxxx&msg=Message will be written here")
             Console.WriteLine(result)
 
         End Sub
