@@ -3,24 +3,23 @@
 * Requirements: your PHP installation needs cUrl support, which not all PHP installations
 * include by default.
 *
-* Substitute your own username, password, mno, Sid, fl, mt, ipcl, and message in seven_bit_msg
+* Substitute your own username, password, mno, Sid, fl, mt, and message in seven_bit_msg
 *then run the code:
 */
 $username = 'username';
 $password = 'password';
-$fl = '0';
 $mt = '0';
-$ipcl = 'ip address for receiver';
+$fl = '0';
 $seven_bit_msg = "Message will be written here";
 /*
 * Your phone number, including country code, i.e. 60123456756:
 */
-$mno = 'Reciever phone number';
+$mno = 'Receiver phone number';
 $Sid = 'test';
 /*
 * 
 */
-$url = 'https://1s2u.com/sms/sendsms/sendsms.asp';
+$url = 'https://api.1s2u.io/bulksms';
 $post_fields = array(
     'username' => $username,
     'password' => $password,
@@ -28,7 +27,6 @@ $post_fields = array(
     'fl' => $fl,
     'Sid' => $Sid,
     'mno' => $mno,
-    'ipcl' => $ipcl,
     'msg' => $seven_bit_msg
 );
 $get_url = $url . "?" . http_build_query($post_fields);
@@ -44,7 +42,7 @@ $get_url = $url . "?" . http_build_query($post_fields);
 /*
 * Sending 7-bit message
 */
-$post_body = seven_bit_sms( $username, $password, $seven_bit_msg, $mno, $Sid, $fl, $mt, $ipcl);
+$post_body = seven_bit_sms( $username, $password, $seven_bit_msg, $mno, $Sid, $fl, $mt);
 $result = send_message( $post_body, $get_url );
 if( $result['success'] ) {
   print_ln( formatted_server_response( $result ) );
@@ -68,7 +66,7 @@ function print_ln($content) {
 function formatted_server_response( $result ) {
   $this_result = "";
   if ($result['success']) {
-    $this_result .= "Success: ID ".$result['id'];
+    $this_result .= "Success ID : ".$result['id'];
   }
   else {
     $this_result .= "Fatal error: HTTP status " .$result['http_status_code']. ", API status " .$result['api_status_code']. " Full details " .$result['details'];
@@ -100,13 +98,13 @@ function send_message ( $post_body, $get_url ) {
   }
   else {
     $sms_result['details'] .= "Response from server: $response_string\n";
-    $api_result = substr($response_string, 0, 4);
+    $api_result = substr($response_string, 0, 2);
     $status_code = $api_result;
     $sms_result['api_status_code'] = $status_code;
-    if ( $api_result != 2019 ) {
+    if ( $api_result != 'OK' ) {
       $sms_result['details'] .= "Error: could not parse valid return data from server.\n" . $api_result;
     } else {
-      if ($status_code == '2019') {
+      if ($status_code == 'OK') {
         $sms_result['success'] = 1;
       }
     }
@@ -114,7 +112,7 @@ function send_message ( $post_body, $get_url ) {
   curl_close( $ch );
   return $sms_result;
 }
-function seven_bit_sms ( $username, $password, $message, $mno, $sid, $fl, $mt, $ipcl ) {
+function seven_bit_sms ( $username, $password, $message, $mno, $sid, $fl, $mt) {
   $post_fields = array (
   'username' => $username,
   'password' => $password,
@@ -122,7 +120,6 @@ function seven_bit_sms ( $username, $password, $message, $mno, $sid, $fl, $mt, $
   'sid' => $sid,
   'sfl' => $fl,
   'mt' => $mt,
-  'ipcl' => $ipcl,
   'message'  => $message
   );
   return make_post_body($post_fields);
