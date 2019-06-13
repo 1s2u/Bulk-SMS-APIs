@@ -5,13 +5,14 @@ Imports System.Text.RegularExpressions
 
 Namespace Demo
     Public Module Program
-        Public Sub Main(args() As string)
+        Public Sub Main(args() As String)
             'Your code goes here
-            
-            
+
+
             Dim webClient As New System.Net.WebClient
-Dim result As String = webClient.DownloadString("http://1s2u.com/sms/sendsms/sendsms.asp?username=xxxxxxx&password=xxxxxxx&mno=60176933511&msg=Welcome toTest technologies&Sid=Test&fl=0&mt=0&ipcl=192.168.1.1")
+            Dim result As String = webClient.DownloadString("https://api.1s2u.io/bulksms?username=xxxxxxx&password=xxxxxxxx&mt=0&fl=0&Sid=Test&mno=xxxxxxxxx&msg=Welcome toTest technologies")
             Console.WriteLine(result)
+
         End Sub
     End Module
 End Namespace
