@@ -7,11 +7,11 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Web;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Threading;
+using System;
 
 namespace Demo
 {
@@ -19,30 +19,28 @@ namespace Demo
     {
         public static void Main(string[] args)
         {
-Stream update_objStream1 = Stream.Null, objStream1 = Stream.Null, objStream = Stream.Null;
-            	string sURL;
-            sURL = "http://1s2u.com/sms/sendsms/sendsms.asp?username=xxxxxx&password=xxxxxxxx&mno=6017xxxx&msg=Welcome toTest technologies&Sid=Test&fl=0&mt=0&ipcl=192.168.1.1";
+            Stream update_objStream1 = Stream.Null, objStream1 = Stream.Null, objStream = Stream.Null;
+            string sURL;
+            sURL = "https://api.1s2u.io/bulksms?username=xxxxxxx&password=xxxxxxxx&mt=0&fl=0&Sid=Test&mno=601xxxxxx&msg=Message will be written here";
 
-                WebRequest wrGETURL;
-                wrGETURL = WebRequest.Create(sURL);
+            WebRequest wrGETURL;
+            wrGETURL = WebRequest.Create(sURL);
 
-                WebProxy myProxy = new WebProxy("myproxy", 80);
-                myProxy.BypassProxyOnLocal = true;
+            WebProxy myProxy = new WebProxy("myproxy", 80);
+            myProxy.BypassProxyOnLocal = true;
 
-                wrGETURL.Proxy = WebProxy.GetDefaultProxy();
+            try { objStream = wrGETURL.GetResponse().GetResponseStream(); }
+            catch (Exception ex)
+            {
+                // handle exception here
 
-                try { objStream = wrGETURL.GetResponse().GetResponseStream(); }
-                catch (Exception ex)
-                {
-                  // handle exception here
-                 
-                }
-                StreamReader objReader = new StreamReader(objStream);
-                string messageId = objReader.ReadLine(); //final message id from stream object
-Console.WriteLine(messageId);
+            }
+            StreamReader objReader = new StreamReader(objStream);
+            string messageId = objReader.ReadLine(); //final message id from stream object
+            Console.WriteLine(messageId);
 
-//note: once done please all connctions.
-//objReader.Close();     
-  }
+            //note: once done please all connctions.
+            //objReader.Close();     
+        }
     }
 }
